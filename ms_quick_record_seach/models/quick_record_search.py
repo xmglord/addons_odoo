@@ -1,4 +1,4 @@
-from odoo import models, api
+from odoo import api, models
 
 
 class QuickRecordSearch(models.AbstractModel):
@@ -8,14 +8,14 @@ class QuickRecordSearch(models.AbstractModel):
     @api.model
     def record_search(self, model, term, limit=10):
         try:
-            Model = self.env[model]
+            model = self.env[model]
         except Exception:
             return []
         try:
-            Model.check_access("read")
+            model.check_access("read")
         except Exception:
             return []
-        records = Model.sudo().search([("display_name", "ilike", term)], limit=limit)
+        records = model.sudo().search([("display_name", "ilike", term)], limit=limit)
         results = []
         for rec in records:
             results.append(
